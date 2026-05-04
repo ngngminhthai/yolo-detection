@@ -53,7 +53,7 @@ with open(dataset_yaml, 'w') as f:
     yaml.dump(dataset_cfg, f, default_flow_style=False)
 
 # ==================== TRAIN ====================
-model = YOLO('ultralytics/cfg/models/11/yolo11.yaml')
+model = YOLO('ultralytics/cfg/models/11/yolo11s.yaml')
 
 results = model.train(
     data          = dataset_yaml,
