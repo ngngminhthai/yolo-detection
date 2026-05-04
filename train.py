@@ -56,14 +56,16 @@ with open(dataset_yaml, 'w') as f:
 model = YOLO('ultralytics/cfg/models/11/yolo11.yaml')
 
 results = model.train(
-    data     = dataset_yaml,
-    epochs   = 3,
-    imgsz    = 320,
-    batch    = 4,
-    device   = 0,
-    project  = os.path.abspath('runs/dummy_train'),
-    name     = 'test_run',
-    exist_ok = True,
+    data          = dataset_yaml,
+    epochs        = 3,
+    imgsz         = 320,
+    batch         = 4,
+    device        = 'cpu',
+    project       = os.path.abspath('runs/dummy_train'),
+    name          = 'test_run',
+    exist_ok      = True,
+    deterministic = False,   # <-- add this
 )
+
 
 print("Done! Results saved to:", results.save_dir)
