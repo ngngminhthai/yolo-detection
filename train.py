@@ -61,7 +61,7 @@ results = model.train(
     imgsz    = 320,
     batch    = 4,
     device   = 0,
-    project  = 'runs/dummy_train',
+    project  = os.path.abspath('runs/dummy_train'),
     name     = 'test_run',
     exist_ok = True,
 )
