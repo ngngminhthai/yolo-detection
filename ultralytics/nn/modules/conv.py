@@ -712,17 +712,12 @@ class DCNv2(nn.Module):
         nn.init.zeros_(self.offset_conv.bias)
 
     def forward(self, x):
-        """Apply deformable convolution with learned offsets/masks, BN, and activation.
-
-        Args:
-            x (torch.Tensor): Input tensor.
-
-        Returns:
-            (torch.Tensor): Output tensor.
-        """
         o1, o2, mask = torch.chunk(self.offset_conv(x), 3, dim=1)
         offset = torch.cat([o1, o2], dim=1)
         mask = torch.sigmoid(mask)
+        # thop's get_flops feeds torch.empty() garbage that can produce NaN/Inf
+        # offsets and segfault deform_conv2d's C++ kernel
+        offset = torch.nan_to_num(offset, nan=0.0, posinf=0.0, neginf=0.0).clamp_(-64.0, 64.0)
         return self.act(self.bn(self.dcn(x, offset, mask)))
 
 
